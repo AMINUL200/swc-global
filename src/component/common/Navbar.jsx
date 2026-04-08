@@ -8,7 +8,7 @@ import {
   ChevronRight,
   ArrowUpRight,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 /* ─── Nav Data ─── */
 const navLinks = [
@@ -19,10 +19,10 @@ const navLinks = [
     label: "Services",
     path: "/services",
     dropdown: [
-      { id: "service-1", label: "Web Development", path: "#" },
-      { id: "service-2", label: "UI/UX Design", path: "#" },
-      { id: "service-3", label: "Cloud Solutions", path: "#" },
-      { id: "service-4", label: "Digital Marketing", path: "#" },
+      { id: "service-1", label: "Web Development", path: "/services/web-development" },
+      { id: "service-2", label: "UI/UX Design", path: "/services/ui-ux-design" },
+      { id: "service-3", label: "Cloud Solutions", path: "/services/cloud-solutions" },
+      { id: "service-4", label: "Digital Marketing", path: "/services/digital-marketing" },
     ],
   },
   { id: "blog", label: "Blog", path: "/blog" },
@@ -52,14 +52,19 @@ function useDropdown() {
 }
 
 /* ─── Services Mega Dropdown ─── */
-const ServicesDropdown = ({ items, visible }) => (
+const ServicesDropdown = ({ items, visible, setActiveDropdown }) => (
   <div
     className={`services-dropdown ${visible ? "services-dropdown--visible" : ""}`}
   >
     <div className="services-dropdown__inner">
       <p className="services-dropdown__label">What we offer</p>
       {items.map((item) => (
-        <Link key={item.id} to={item.path} className="services-dropdown__item" onClick={() =>  setActiveDropdown(null)}>
+        <Link 
+          key={item.id} 
+          to={item.path} 
+          className="services-dropdown__item" 
+          onClick={() => setActiveDropdown(null)}
+        >
           <span className="services-dropdown__item-icon">
             <Zap size={14} />
           </span>
@@ -121,6 +126,7 @@ const Navbar = ({ toggleMenu }) => {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -138,6 +144,12 @@ const Navbar = ({ toggleMenu }) => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileOpen(false);
+    setMobileExpanded(null);
+  }, [location]);
 
   const handleMobileToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -626,7 +638,7 @@ const Navbar = ({ toggleMenu }) => {
         >
           <div className="navbar__inner">
             {/* ── Logo ── */}
-            <Link href="/" className="navbar__logo">
+            <Link to="/" className="navbar__logo">
               <img
                 src="/image/swc_logo.png"
                 alt="Logo"
@@ -641,13 +653,13 @@ const Navbar = ({ toggleMenu }) => {
                   key={link.id}
                   className="navbar__link-item"
                   onMouseEnter={() => {
-                    clearTimeout(timeoutRef.current); // stop closing
+                    clearTimeout(timeoutRef.current);
                     setActiveDropdown(link.id);
                   }}
                   onMouseLeave={() => {
                     timeoutRef.current = setTimeout(() => {
                       setActiveDropdown(null);
-                    }, 200); // delay close
+                    }, 200);
                   }}
                 >
                   {link.dropdown ? (
@@ -671,12 +683,16 @@ const Navbar = ({ toggleMenu }) => {
                         <ServicesDropdown
                           items={link.dropdown}
                           visible={activeDropdown === link.id}
+                          setActiveDropdown={setActiveDropdown}
                         />
                     </>
                   ) : (
-                    <a href={link.path} className="navbar__link">
+                    <Link 
+                      to={link.path} 
+                      className={`navbar__link ${location.pathname === link.path ? "navbar__link--active" : ""}`}
+                    >
                       {link.label}
-                    </a>
+                    </Link>
                   )}
                 </li>
               ))}
@@ -685,13 +701,13 @@ const Navbar = ({ toggleMenu }) => {
             {/* ── Right Actions ── */}
             <div className="navbar__actions">
               <CountrySelector />
-              <a
-                href="/contact"
+              <Link
+                to={"/contact"}
                 className="navbar__cta hidden! sm:inline-flex! btn-slide-bg py-4"
               >
                 <Zap size={14} strokeWidth={2.5} />
                 <span className="navbar__cta-text">Get Started</span>
-              </a>
+              </Link>
               <button
                 className="navbar__hamburger"
                 onClick={handleMobileToggle}
@@ -740,10 +756,11 @@ const Navbar = ({ toggleMenu }) => {
                     {mobileExpanded === link.id && (
                       <div className="mobile-drawer__sub">
                         {link.dropdown.map((sub) => (
-                          <a
+                          <Link
                             key={sub.id}
-                            href={sub.path}
+                            to={sub.path}
                             className="mobile-drawer__sub-link"
+                            onClick={() => setMobileOpen(false)}
                           >
                             <span className="mobile-drawer__sub-dot" />
                             {sub.label}
@@ -751,15 +768,19 @@ const Navbar = ({ toggleMenu }) => {
                               size={14}
                               style={{ marginLeft: "auto", opacity: 0.4 }}
                             />
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     )}
                   </>
                 ) : (
-                  <a href={link.path} className="mobile-drawer__link">
+                  <Link 
+                    to={link.path} 
+                    className="mobile-drawer__link"
+                    onClick={() => setMobileOpen(false)}
+                  >
                     {link.label}
-                  </a>
+                  </Link>
                 )}
               </li>
             ))}
@@ -769,10 +790,14 @@ const Navbar = ({ toggleMenu }) => {
 
           <div className="mobile-drawer__footer">
             <CountrySelector />
-            <a href="/contact" className="mobile-drawer__cta">
+            <Link 
+              to="/contact" 
+              className="mobile-drawer__cta"
+              onClick={() => setMobileOpen(false)}
+            >
               <Zap size={16} strokeWidth={2.5} />
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </div>

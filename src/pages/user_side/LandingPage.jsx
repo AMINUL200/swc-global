@@ -6,8 +6,24 @@ import OurProduct from '../../component/home/OurProduct'
 import WhyChooseUs from '../../component/home/WhyChooseUs'
 import OurServiceSection from '../../component/home/OurServiceSection'
 import CTASection from '../../component/home/CTASection'
+import PageLoader from '../../component/common/PageLoader'
 
 const LandingPage = () => {
+
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1500); // Simulate loading for 1.5 seconds
+        return () => clearTimeout(timer);
+    }, []);
+
+
+    if (loading) {
+      return <PageLoader/>
+    }
+
   return (
     <div>
       {/* Section 1 : Hero Section */}

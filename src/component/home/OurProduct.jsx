@@ -25,7 +25,7 @@ const OurProduct = ({ productData = [] }) => {
 
   useEffect(() => {
     setFilteredProducts(productData);
-  }, [productData]);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
