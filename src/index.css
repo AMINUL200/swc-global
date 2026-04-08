@@ -1,0 +1,385 @@
+@import "tailwindcss";
+
+/* ================================================================
+   index.css — SWC Company Website
+   Premium Button System + Color Schema
+   ================================================================ */
+
+/* ─── Color Tokens ─── */
+:root {
+  /* Brand */
+  --primary-blue:    #1E3A8A;
+  --primary-hover:   #1d4ed8;
+  --secondary-blue:  #3B82F6;
+  --teal-accent:     #14B8A6;
+  --teal-hover:      #0d9488;
+
+  /* Surfaces */
+  --bg-main:         #F0F4FF;
+  --bg-section:      #F8FAFC;
+  --bg-card:         #FFFFFF;
+  --border-color:    rgba(30, 58, 138, 0.12);
+
+  /* Text */
+  --text-primary:    #111827;
+  --text-secondary:  #6B7280;
+
+  /* Gradients */
+  --gradient-brand:  linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #14B8A6 100%);
+  --gradient-text:   linear-gradient(135deg, #1E3A8A, #14B8A6);
+  --gradient-sweep:  linear-gradient(120deg, #1E3A8A, #3B82F6, #14B8A6, #3B82F6, #1E3A8A);
+
+  /* Shadows */
+  --shadow-btn-rest:   0 1px 2px rgba(30,58,138,0.14), 0 3px 10px rgba(30,58,138,0.18);
+  --shadow-btn-hover:  0 2px 4px rgba(30,58,138,0.10), 0 8px 24px rgba(30,58,138,0.30);
+  --shadow-teal-rest:  0 1px 2px rgba(20,184,166,0.14), 0 3px 10px rgba(20,184,166,0.22);
+  --shadow-teal-hover: 0 2px 4px rgba(20,184,166,0.10), 0 8px 24px rgba(20,184,166,0.36);
+}
+
+
+/* ─── Reset ─── */
+*, *::before, *::after {
+  /* margin: 0;
+  padding: 0; */
+  box-sizing: border-box;
+}
+
+/* ─── Base ─── */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', system-ui, sans-serif;
+}
+
+/* ================================================================
+   PREMIUM BUTTON SYSTEM WITH REVERSE ANIMATIONS
+   ================================================================ */
+
+/* ── Base Button ── */
+.btn-slide-bg, 
+.btn-text-slide,
+.btn-pulse-ring ,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 1rem 1.375rem;
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease;
+  box-shadow: var(--shadow-btn-rest);
+}
+
+/* ===== EFFECT 1: SLIDING BACKGROUND (Left to Right → Right to Left) ===== */
+.btn-slide-bg {
+  position: relative;
+  background-color: var(--primary-blue);
+  z-index: 1;
+}
+
+.btn-slide-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
+}
+
+.btn-slide-bg:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Reverse animation on mouse leave happens automatically */
+.btn-slide-bg::before {
+  transform-origin: right;
+  transform: scaleX(0);
+}
+
+/* ===== EFFECT 2: TEXT SLIDE UP/DOWN ===== */
+.btn-text-slide {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--primary-blue);
+}
+
+.btn-text-slide .btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.btn-text-slide:hover .btn-content {
+  transform: translateY(-100%);
+}
+
+.btn-text-slide .btn-content-hidden {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.btn-text-slide:hover .btn-content-hidden {
+  transform: translateY(-100%);
+}
+
+/* Simplified text slide - no extra elements needed */
+.btn-text-slide-simple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-text-slide-simple span {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.btn-text-slide-simple:hover span {
+  transform: translateY(-100%);
+}
+
+.btn-text-slide-simple::after {
+  content: attr(data-hover);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.btn-text-slide-simple:hover::after {
+  transform: translateY(-100%);
+}
+
+
+
+/* ===== EFFECT 4: PULSE RING ===== */
+.btn-pulse-ring {
+  position: relative;
+  animation: none;
+}
+
+.btn-pulse-ring:hover {
+  animation: pulseRing 0.6s ease-out;
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(20, 184, 166, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(20, 184, 166, 0);
+  }
+}
+
+
+
+
+/* ===== EFFECT 7: BOUNCE ===== */
+.btn-bounce {
+  transition: all 0.2s ease;
+}
+
+.btn-bounce:hover {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ===== EFFECT 8: WIDTH EXPAND ===== */
+.btn-width-expand {
+  transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-width-expand:hover {
+  padding-right: 2.5rem;
+  background: var(--gradient-brand);
+}
+
+.btn-width-expand::after {
+  content: '→';
+  position: absolute;
+  right: -20px;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.btn-width-expand:hover::after {
+  right: 1rem;
+  opacity: 1;
+}
+
+
+
+/* ===== EFFECT 10: DUAL COLOR REVEAL ===== */
+.btn-dual-reveal {
+  position: relative;
+  background: linear-gradient(90deg, var(--primary-blue) 50%, var(--teal-accent) 50%);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  transition: background-position 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.btn-dual-reveal:hover {
+  background-position: -100% 0;
+}
+
+
+
+
+
+/* ================================================================
+   VARIANTS & SIZES
+   ================================================================ */
+
+.btn-gradient {
+  background: var(--gradient-brand);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  box-shadow: 0 1px 2px rgba(20,184,166,0.10), 0 4px 14px rgba(30,58,138,0.28);
+}
+.btn-gradient:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+}
+
+.btn-teal {
+  background-color: var(--teal-accent);
+  box-shadow: var(--shadow-teal-rest);
+}
+.btn-teal:hover {
+  background-color: var(--teal-hover);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary-blue);
+  border: 1.5px solid rgba(30, 58, 138, 0.35);
+  box-shadow: none;
+}
+.btn-outline:hover {
+  background-color: rgba(30, 58, 138, 0.05);
+  border-color: var(--primary-blue);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background-color: rgba(30, 58, 138, 0.07);
+  color: var(--primary-blue);
+  box-shadow: none;
+}
+.btn-ghost:hover {
+  background-color: rgba(30, 58, 138, 0.13);
+  transform: translateY(-2px);
+}
+
+/* Sizes */
+.btn-sm { padding: 0.44rem 1rem; font-size: 0.75rem; border-radius: 8px; }
+.btn-lg { padding: 0.875rem 2rem; font-size: 0.9375rem; border-radius: 12px; }
+.btn-xl { padding: 1.125rem 2.5rem; font-size: 1rem; border-radius: 14px; }
+.btn-icon { width: 38px; height: 38px; padding: 0; border-radius: 10px; }
+.btn-pill { border-radius: 999px !important; }
+.btn-block { display: flex; width: 100%; }
+
+/* Click press */
+button:active, .btn:active {
+  transform: scale(0.96) !important;
+  transition-duration: 0.08s;
+}
+
+/* Focus ring */
+button:focus-visible, .btn:focus-visible {
+  outline: 2.5px solid var(--secondary-blue);
+  outline-offset: 3px;
+}
+
+/* Disabled */
+button:disabled, .btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ================================================================
+   UTILITY CLASSES
+   ================================================================ */
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-teal { color: var(--teal-accent); }
+.text-blue { color: var(--primary-blue); }
+
+.bg-main { background-color: var(--bg-main); }
+.bg-section { background-color: var(--bg-section); }
+
+.section {
+  background-color: var(--bg-section);
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -8px rgba(30,58,138,0.10);
+}
