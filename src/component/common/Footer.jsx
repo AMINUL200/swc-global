@@ -689,9 +689,9 @@ const Footer = ({ settingData = null, serviceData = [] }) => {
               <div>
                 <h4 className="footer__col-title">Quick Links</h4>
                 <ul className="footer__col-links">
-                  {quickLinks.slice(0, 6).map((link) => (
+                  {quickLinks.slice(0, 10).map((link) => (
                     <li key={link.name}>
-                      <Link onClick={() => handleNavigation(link.path)} className="footer__col-link">
+                      <Link to={link.path} onClick={() => window.scrollTo(0, 0)} className="footer__col-link">
                         <ChevronRight size={12} className="footer__col-link-arrow" />
                         {link.name}
                       </Link>

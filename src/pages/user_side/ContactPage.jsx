@@ -44,46 +44,14 @@ const C = {
 
 /* ─── Helpers ─── */
 const GText = ({ children }) => (
-  <span
-    style={{
-      background: "linear-gradient(135deg,#1E3A8A,#14B8A6)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
-    }}
-  >
+  <span className="bg-gradient-to-r from-[#1E3A8A] to-[#14B8A6] bg-clip-text text-transparent">
     {children}
   </span>
 );
 
 const Badge = ({ children }) => (
-  <span
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 7,
-      padding: "5px 14px",
-      borderRadius: 999,
-      background: "rgba(20,184,166,0.10)",
-      border: "1px solid rgba(20,184,166,0.25)",
-      fontFamily: "'Sora',sans-serif",
-      fontSize: "0.7rem",
-      fontWeight: 700,
-      letterSpacing: "0.09em",
-      textTransform: "uppercase",
-      color: "#0d9488",
-    }}
-  >
-    <span
-      style={{
-        width: 6,
-        height: 6,
-        borderRadius: "50%",
-        background: "#14B8A6",
-        display: "inline-block",
-        animation: "cp-pulse 2s ease-in-out infinite",
-      }}
-    />
+  <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/25 font-sans text-[0.7rem] font-bold tracking-[0.09em] uppercase text-teal-600">
+    <span className="w-1.5 h-1.5 rounded-full bg-teal-600 inline-block animate-[cp-pulse_2s_ease-in-out_infinite]" />
     {children}
   </span>
 );
@@ -93,56 +61,19 @@ const Badge = ({ children }) => (
 ══════════════════════════════════════════════ */
 
 const channels = [
-  {
-    icon: Phone,
-    label: "Call",
-    color: "#3B82F6",
-    bg: "rgba(59,130,246,0.18)",
-    angle: -90,
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    color: "#14B8A6",
-    bg: "rgba(20,184,166,0.18)",
-    angle: -30,
-  },
-  {
-    icon: MessageCircle,
-    label: "Chat",
-    color: "#8B5CF6",
-    bg: "rgba(139,92,246,0.18)",
-    angle: 30,
-  },
-  {
-    icon: MapPin,
-    label: "Visit",
-    color: "#F59E0B",
-    bg: "rgba(245,158,11,0.18)",
-    angle: 90,
-  },
-  {
-    icon: Video,
-    label: "Video",
-    color: "#EC4899",
-    bg: "rgba(236,72,153,0.18)",
-    angle: 150,
-  },
-  {
-    icon: HeadphonesIcon,
-    label: "Help",
-    color: "#14B8A6",
-    bg: "rgba(20,184,166,0.18)",
-    angle: 210,
-  },
+  { icon: Phone, label: "Call", color: "#3B82F6", bg: "rgba(59,130,246,0.18)", angle: -90 },
+  { icon: Mail, label: "Email", color: "#14B8A6", bg: "rgba(20,184,166,0.18)", angle: -30 },
+  { icon: MessageCircle, label: "Chat", color: "#8B5CF6", bg: "rgba(139,92,246,0.18)", angle: 30 },
+  { icon: MapPin, label: "Visit", color: "#F59E0B", bg: "rgba(245,158,11,0.18)", angle: 90 },
+  { icon: Video, label: "Video", color: "#EC4899", bg: "rgba(236,72,153,0.18)", angle: 150 },
+  { icon: HeadphonesIcon, label: "Help", color: "#14B8A6", bg: "rgba(20,184,166,0.18)", angle: 210 },
 ];
 
-const RADIUS = 130; // orbit radius
-const SIZE = 340; // canvas size
-const CX = SIZE / 2; // 170 — true center
-const CY = SIZE / 2; // 170
+const RADIUS = 130;
+const SIZE = 340;
+const CX = SIZE / 2;
+const CY = SIZE / 2;
 
-/* ─── Helper: polar → cartesian ─── */
 const polar = (angleDeg, r = RADIUS) => {
   const rad = (angleDeg * Math.PI) / 180;
   return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
@@ -158,14 +89,11 @@ const ContactHeroVisual = () => {
   const dotRefs = useRef([]);
   const pulse1Ref = useRef(null);
   const pulse2Ref = useRef(null);
-  const tlRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
-      tlRef.current = tl;
 
-      /* 1 ── Center node entrance */
       tl.fromTo(
         centerRef.current,
         { scale: 0, opacity: 0 },
@@ -173,23 +101,14 @@ const ContactHeroVisual = () => {
         0,
       );
 
-      /* 2 ── Pulse rings loop */
       [pulse1Ref.current, pulse2Ref.current].forEach((el, i) => {
         gsap.fromTo(
           el,
           { scale: 0.65, opacity: 0.7 },
-          {
-            scale: 1.85,
-            opacity: 0,
-            duration: 2.5,
-            ease: "power1.out",
-            repeat: -1,
-            delay: i * 1.25,
-          },
+          { scale: 1.85, opacity: 0, duration: 2.5, ease: "power1.out", repeat: -1, delay: i * 1.25 },
         );
       });
 
-      /* 3 ── Rings rotate (infinite, no timeline entry needed) */
       gsap.to(ring1Ref.current, {
         rotation: 360,
         duration: 30,
@@ -212,21 +131,13 @@ const ContactHeroVisual = () => {
         transformOrigin: "50% 50%",
       });
 
-      /* 4 ── Channel nodes entrance (staggered) */
       tl.fromTo(
         nodeRefs.current,
         { scale: 0.5, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.55,
-          ease: "back.out(2)",
-          stagger: 0.12,
-        },
+        { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.12 },
         0.2,
       );
 
-      /* 5 ── Travelling dots (one per line, loops forever) */
       channels.forEach((ch, i) => {
         const { x: x2, y: y2 } = polar(ch.angle);
         gsap.fromTo(
@@ -247,7 +158,6 @@ const ContactHeroVisual = () => {
         );
       });
 
-      /* 6 ── Subtle idle float on node icons */
       nodeRefs.current.forEach((el, i) => {
         gsap.to(el, {
           y: i % 2 === 0 ? -5 : 5,
@@ -264,201 +174,91 @@ const ContactHeroVisual = () => {
   }, []);
 
   return (
-    <>
-      <style>{`
-        .chv-wrap {
-          position: relative;
-          width: ${SIZE}px;
-          height: ${SIZE}px;
-          flex-shrink: 0;
-          /* ensure sub-elements don't inherit unexpected positioning */
-        }
- 
-        /* ── Center node ── */
-        .chv-center {
-          position: absolute;
-          width: 80px; height: 80px;
-          border-radius: 50%;
-          background: linear-gradient(135deg,#1E3A8A,#14B8A6);
-          display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 8px 32px rgba(20,184,166,0.40), 0 0 0 6px rgba(20,184,166,0.12);
-          z-index: 25;
-          /* centered via left/top + transform, NOT translate(-50%,-50%) to avoid GSAP conflict */
-          left: ${CX - 40}px;
-          top:  ${CY - 40}px;
-        }
- 
-        /* ── Pulse rings ── */
-        .chv-pulse {
-          position: absolute;
-          width: 90px; height: 90px;
-          border-radius: 50%;
-          border: 1.5px solid rgba(20,184,166,0.40);
-          pointer-events: none;
-          z-index: 10;
-          left: ${CX - 45}px;
-          top:  ${CY - 45}px;
-        }
- 
-        /* ── SVG layers ── */
-        .chv-svg {
-          position: absolute;
-          inset: 0;
-          width: 100%; height: 100%;
-          pointer-events: none;
-        }
-        .chv-svg--lines { z-index: 5; }
-        .chv-svg--rings { z-index: 4; }
- 
-        /* ── Channel node ── */
-        .chv-node {
-          position: absolute;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 5px;
-          z-index: 18;
-        }
-        .chv-node__icon {
-          width: 48px; height: 48px;
-          border-radius: 14px;
-          display: flex; align-items: center; justify-content: center;
-          box-shadow: var(--node-shadow);
-          backdrop-filter: blur(10px);
-          transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-          cursor: default;
-        }
-        .chv-node__icon:hover { transform: scale(1.12); }
-        .chv-node__label {
-          font-family: 'Sora', system-ui, sans-serif;
-          font-size: 0.6rem; font-weight: 700;
-          color: rgba(30,58,138,0.55);
-          letter-spacing: 0.07em;
-          text-transform: uppercase;
-        }
-      `}</style>
-
-      <div className="chv-wrap" ref={wrapRef}>
-        {/* ── Connection lines + travelling dots ── */}
-        <svg className="chv-svg chv-svg--lines">
-          {channels.map((ch, i) => {
-            const { x: x2, y: y2 } = polar(ch.angle);
-            return (
-              <g key={i}>
-                <line
-                  x1={CX}
-                  y1={CY}
-                  x2={x2}
-                  y2={y2}
-                  stroke={ch.color}
-                  strokeWidth="1"
-                  strokeOpacity="0.22"
-                  strokeDasharray="5 5"
-                />
-                <circle
-                  ref={(el) => (dotRefs.current[i] = el)}
-                  r="3"
-                  fill={ch.color}
-                  cx={CX}
-                  cy={CY}
-                  opacity="0"
-                />
-              </g>
-            );
-          })}
-        </svg>
-
-        {/* ── Rotating rings ── */}
-        <svg className="chv-svg chv-svg--rings">
-          {/* outer two rings — rotate together */}
-          <g ref={ring1Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
-            <circle
-              cx={CX}
-              cy={CY}
-              r="148"
-              fill="none"
-              stroke="rgba(20,184,166,0.18)"
-              strokeWidth="1"
-              strokeDasharray="8 6"
-            />
-          </g>
-          <g ref={ring2Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
-            <circle
-              cx={CX}
-              cy={CY}
-              r="112"
-              fill="none"
-              stroke="rgba(30,58,138,0.13)"
-              strokeWidth="1"
-              strokeDasharray="5 8"
-            />
-          </g>
-          {/* inner ring — counter-rotate */}
-          <g ref={ring3Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
-            <circle
-              cx={CX}
-              cy={CY}
-              r="78"
-              fill="none"
-              stroke="rgba(59,130,246,0.15)"
-              strokeWidth="1"
-              strokeDasharray="4 5"
-            />
-          </g>
-        </svg>
-
-        {/* ── Pulse rings (centered via CSS, animated by GSAP) ── */}
-        <div ref={pulse1Ref} className="chv-pulse" />
-        <div ref={pulse2Ref} className="chv-pulse" style={{ opacity: 0 }} />
-
-        {/* ── Center node ── */}
-        <div
-          ref={centerRef}
-          className="chv-center"
-          style={{ opacity: 0, transform: "scale(0)" }}
-        >
-          <Globe size={32} color="#fff" strokeWidth={1.5} />
-        </div>
-
-        {/* ── Channel nodes ── */}
+    <div ref={wrapRef} className="relative w-[340px] h-[340px] flex-shrink-0">
+      {/* Connection lines + travelling dots */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-[5]">
         {channels.map((ch, i) => {
-          /* node icon is 48px wide; label ~48px wide
-             offset by half (24px) to truly center the icon on the orbit point */
-          const { x, y } = polar(ch.angle);
+          const { x: x2, y: y2 } = polar(ch.angle);
           return (
-            <div
-              key={i}
-              ref={(el) => (nodeRefs.current[i] = el)}
-              className="chv-node"
-              style={{
-                left: x - 24 /* center 48px icon on orbit point */,
-                top: y - 24 /* center 48px icon on orbit point */,
-                opacity: 0,
-              }}
-            >
-              <div
-                className="chv-node__icon"
-                style={{
-                  background: ch.bg,
-                  border: `1.5px solid ${ch.color}35`,
-                  "--node-shadow": `0 4px 16px ${ch.color}22`,
-                }}
-              >
-                <ch.icon size={20} color={ch.color} strokeWidth={2} />
-              </div>
-              <span className="chv-node__label text-white!">{ch.label}</span>
-            </div>
+            <g key={i}>
+              <line
+                x1={CX}
+                y1={CY}
+                x2={x2}
+                y2={y2}
+                stroke={ch.color}
+                strokeWidth="1"
+                strokeOpacity="0.22"
+                strokeDasharray="5 5"
+              />
+              <circle
+                ref={(el) => (dotRefs.current[i] = el)}
+                r="3"
+                fill={ch.color}
+                cx={CX}
+                cy={CY}
+                opacity="0"
+              />
+            </g>
           );
         })}
+      </svg>
+
+      {/* Rotating rings */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-[4]">
+        <g ref={ring1Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
+          <circle cx={CX} cy={CY} r="148" fill="none" stroke="rgba(20,184,166,0.18)" strokeWidth="1" strokeDasharray="8 6" />
+        </g>
+        <g ref={ring2Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
+          <circle cx={CX} cy={CY} r="112" fill="none" stroke="rgba(30,58,138,0.13)" strokeWidth="1" strokeDasharray="5 8" />
+        </g>
+        <g ref={ring3Ref} style={{ transformOrigin: `${CX}px ${CY}px` }}>
+          <circle cx={CX} cy={CY} r="78" fill="none" stroke="rgba(59,130,246,0.15)" strokeWidth="1" strokeDasharray="4 5" />
+        </g>
+      </svg>
+
+      {/* Pulse rings */}
+      <div ref={pulse1Ref} className="absolute w-[90px] h-[90px] rounded-full border-[1.5px] border-teal-500/40 pointer-events-none z-[10] left-[calc(50%-45px)] top-[calc(50%-45px)]" />
+      <div ref={pulse2Ref} className="absolute w-[90px] h-[90px] rounded-full border-[1.5px] border-teal-500/40 pointer-events-none z-[10] left-[calc(50%-45px)] top-[calc(50%-45px)] opacity-0" />
+
+      {/* Center node */}
+      <div
+        ref={centerRef}
+        className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-[#1E3A8A] to-[#14B8A6] flex items-center justify-center shadow-[0_8px_32px_rgba(20,184,166,0.40),0_0_0_6px_rgba(20,184,166,0.12)] z-25 left-[calc(50%-40px)] top-[calc(50%-40px)] opacity-0 scale-0"
+      >
+        <Globe size={32} color="#fff" strokeWidth={1.5} />
       </div>
-    </>
+
+      {/* Channel nodes */}
+      {channels.map((ch, i) => {
+        const { x, y } = polar(ch.angle);
+        return (
+          <div
+            key={i}
+            ref={(el) => (nodeRefs.current[i] = el)}
+            className="absolute flex flex-col items-center gap-1 z-[18] opacity-0"
+            style={{ left: x - 24, top: y - 24 }}
+          >
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-md transition-transform duration-200 hover:scale-110 cursor-default"
+              style={{
+                background: ch.bg,
+                border: `1.5px solid ${ch.color}35`,
+                boxShadow: `0 4px 16px ${ch.color}22`,
+              }}
+            >
+              <ch.icon size={20} color={ch.color} strokeWidth={2} />
+            </div>
+            <span className="font-sans text-[0.6rem] font-bold tracking-[0.07em] uppercase text-white/55">{ch.label}</span>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
-/* ══════════════════════════════════════════════
-   FLOATING CHIPS  (GSAP float loop)
-══════════════════════════════════════════════ */
-const FloatingChip = ({ text, Icon, color, style, delay = 0 }) => {
+/* ── Floating Chip ── */
+const FloatingChip = ({ text, Icon, color, delay = 0, style = {} }) => {
   const ref = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -481,26 +281,8 @@ const FloatingChip = ({ text, Icon, color, style, delay = 0 }) => {
   return (
     <div
       ref={ref}
-      style={{
-        position: "absolute",
-        display: "flex",
-        alignItems: "center",
-        gap: 7,
-        padding: "8px 14px",
-        background: "rgba(255,255,255,0.92)",
-        backdropFilter: "blur(12px)",
-        border: "1px solid rgba(30,58,138,0.10)",
-        borderRadius: 999,
-        fontFamily: "'Sora',sans-serif",
-        fontSize: "0.72rem",
-        fontWeight: 700,
-        color,
-        boxShadow: "0 4px 18px rgba(30,58,138,0.10)",
-        whiteSpace: "nowrap",
-        zIndex: 20,
-        opacity: 0,
-        ...style,
-      }}
+      className="absolute flex items-center gap-1.5 px-3.5 py-2 bg-white/92 backdrop-blur-md border border-[rgba(30,58,138,0.10)] rounded-full font-sans text-[0.72rem] font-bold shadow-md whitespace-nowrap z-20 opacity-0"
+      style={{ color, ...style }}
     >
       <Icon size={12} strokeWidth={2.5} />
       {text}
@@ -509,7 +291,7 @@ const FloatingChip = ({ text, Icon, color, style, delay = 0 }) => {
 };
 
 /* ── Stat Float ── */
-const StatFloat = ({ val, label, style, delay = 0 }) => {
+const StatFloat = ({ val, label, delay = 0, style = {} }) => {
   const ref = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -532,484 +314,157 @@ const StatFloat = ({ val, label, style, delay = 0 }) => {
   return (
     <div
       ref={ref}
-      style={{
-        position: "absolute",
-        background: "rgba(255,255,255,0.90)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(30,58,138,0.09)",
-        borderRadius: 14,
-        padding: "12px 16px",
-        boxShadow: "0 8px 24px rgba(30,58,138,0.10)",
-        zIndex: 20,
-        minWidth: 110,
-        opacity: 0,
-        ...style,
-      }}
+      className="absolute bg-white/90 backdrop-blur-md border border-[rgba(30,58,138,0.09)] rounded-xl p-3 px-4 shadow-lg z-20 min-w-[110px] opacity-0"
+      style={style}
     >
-      <div
-        style={{
-          fontFamily: "'Sora',sans-serif",
-          fontSize: "1.375rem",
-          fontWeight: 800,
-          letterSpacing: "-0.04em",
-          background: "linear-gradient(135deg,#1E3A8A,#14B8A6)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          lineHeight: 1,
-        }}
-      >
+      <div className="font-sans text-[1.375rem] font-extrabold tracking-[-0.04em] bg-gradient-to-r from-[#1E3A8A] to-[#14B8A6] bg-clip-text text-transparent leading-none">
         {val}
       </div>
-      <div
-        style={{
-          fontFamily: "'DM Sans',sans-serif",
-          fontSize: "0.72rem",
-          color: "#9CA3AF",
-          marginTop: 3,
-        }}
-      >
-        {label}
-      </div>
+      <div className="font-dm-sans text-[0.72rem] text-gray-400 mt-0.5">{label}</div>
     </div>
   );
 };
 
 /* ─── Data ─── */
 const quickContacts = [
-  {
-    icon: Phone,
-    label: "Call Support",
-    value: "+44 20 1234 5678",
-    sub: "Mon–Fri, 9am–6pm GMT",
-    cta: "Speak with our HR experts",
-    href: "tel:+442012345678",
-    accent: C.secondaryBlue,
-    bg: "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(59,130,246,0.06))",
-  },
-  {
-    icon: Mail,
-    label: "Email Support",
-    value: "hello@swcloud.co.uk",
-    sub: "Response within 2 hours",
-    cta: "Send queries & documents",
-    href: "mailto:hello@swcloud.co.uk",
-    accent: C.tealAccent,
-    bg: "linear-gradient(135deg,rgba(20,184,166,0.08),rgba(13,148,136,0.04))",
-  },
-  {
-    icon: MapPin,
-    label: "Our Office",
-    value: "London, EC2A 4NE",
-    sub: "United Kingdom",
-    cta: "Schedule an in-person visit",
-    href: "https://maps.google.com",
-    accent: C.primaryBlue,
-    bg: "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(29,78,216,0.04))",
-  },
-  {
-    icon: Clock,
-    label: "Office Hours",
-    value: "Mon–Fri, 9–6pm",
-    sub: "GMT / BST timezone",
-    cta: "Book a consultation slot",
-    href: "#contact-form",
-    accent: "#7C3AED",
-    bg: "linear-gradient(135deg,rgba(124,58,237,0.08),rgba(109,40,217,0.04))",
-  },
+  { icon: Phone, label: "Call Support", value: "+44 20 1234 5678", sub: "Mon–Fri, 9am–6pm GMT", cta: "Speak with our HR experts", href: "tel:+442012345678", accent: C.secondaryBlue, bg: "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(59,130,246,0.06))" },
+  { icon: Mail, label: "Email Support", value: "hello@swcloud.co.uk", sub: "Response within 2 hours", cta: "Send queries & documents", href: "mailto:hello@swcloud.co.uk", accent: C.tealAccent, bg: "linear-gradient(135deg,rgba(20,184,166,0.08),rgba(13,148,136,0.04))" },
+  { icon: MapPin, label: "Our Office", value: "London, EC2A 4NE", sub: "United Kingdom", cta: "Schedule an in-person visit", href: "https://maps.google.com", accent: C.primaryBlue, bg: "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(29,78,216,0.04))" },
+  { icon: Clock, label: "Office Hours", value: "Mon–Fri, 9–6pm", sub: "GMT / BST timezone", cta: "Book a consultation slot", href: "#contact-form", accent: "#7C3AED", bg: "linear-gradient(135deg,rgba(124,58,237,0.08),rgba(109,40,217,0.04))" },
 ];
 
 const departments = [
-  {
-    icon: Briefcase,
-    title: "Sales & Demos",
-    desc: "Product demonstrations and pricing enquiries",
-    email: "sales@swcloud.co.uk",
-    phone: "+44 20 1234 5678",
-    tag: "Sales",
-  },
-  {
-    icon: HeadphonesIcon,
-    title: "Technical Support",
-    desc: "Platform assistance and troubleshooting",
-    email: "support@swcloud.co.uk",
-    phone: "+44 20 1234 5679",
-    tag: "Support",
-  },
-  {
-    icon: Users,
-    title: "HR Consulting",
-    desc: "HR strategy, compliance and implementation",
-    email: "consulting@swcloud.co.uk",
-    phone: "+44 20 1234 5680",
-    tag: "Consulting",
-  },
+  { icon: Briefcase, title: "Sales & Demos", desc: "Product demonstrations and pricing enquiries", email: "sales@swcloud.co.uk", phone: "+44 20 1234 5678", tag: "Sales" },
+  { icon: HeadphonesIcon, title: "Technical Support", desc: "Platform assistance and troubleshooting", email: "support@swcloud.co.uk", phone: "+44 20 1234 5679", tag: "Support" },
+  { icon: Users, title: "HR Consulting", desc: "HR strategy, compliance and implementation", email: "consulting@swcloud.co.uk", phone: "+44 20 1234 5680", tag: "Consulting" },
 ];
 
-const subjects = [
-  "Sales & Pricing",
-  "Technical Support",
-  "HR Consulting",
-  "Product Demo",
-  "Partnership",
-  "General Inquiry",
-];
+const subjects = ["Sales & Pricing", "Technical Support", "HR Consulting", "Product Demo", "Partnership", "General Inquiry"];
 
-/* ══════════════════════════════════════════════
-   SCROLL-FADE WRAPPER
-══════════════════════════════════════════════ */
-const Reveal = ({ children, delay = 0, style = {} }) => {
+/* ── Scroll Reveal ── */
+const Reveal = ({ children, delay = 0, className = "" }) => {
   const ref = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ref.current,
         { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          ease: "power3.out",
-          delay,
-          scrollTrigger: { trigger: ref.current, start: "top 88%", once: true },
-        },
+        { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", delay, scrollTrigger: { trigger: ref.current, start: "top 88%", once: true } },
       );
     }, ref);
     return () => ctx.revert();
   }, [delay]);
   return (
-    <div ref={ref} style={{ opacity: 0, ...style }}>
+    <div ref={ref} className={`opacity-0 ${className}`}>
       {children}
     </div>
   );
 };
 
-/* ══════════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════════ */
+/* ── Toast ── */
 const Toast = ({ msg, onClose }) => {
   const ref = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ref.current,
-        { opacity: 0, y: -20, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" },
-      );
+      gsap.fromTo(ref.current, { opacity: 0, y: -20, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" });
     }, ref);
     return () => ctx.revert();
   }, []);
   const hide = () => {
-    gsap.to(ref.current, {
-      opacity: 0,
-      y: -16,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: onClose,
-    });
+    gsap.to(ref.current, { opacity: 0, y: -16, duration: 0.3, ease: "power2.in", onComplete: onClose });
   };
   return (
-    <div
-      ref={ref}
-      style={{
-        position: "fixed",
-        top: 24,
-        right: 24,
-        zIndex: 999,
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        background: "linear-gradient(135deg,#0B1437,#111D4A)",
-        border: "1px solid rgba(20,184,166,0.35)",
-        borderRadius: 14,
-        padding: "14px 20px",
-        boxShadow: "0 16px 40px rgba(0,0,0,0.3)",
-        minWidth: 300,
-      }}
-    >
+    <div ref={ref} className="fixed top-6 right-6 z-[999] flex items-center gap-2.5 bg-gradient-to-br from-[#0B1437] to-[#111D4A] border border-teal-500/35 rounded-xl py-3.5 px-5 shadow-2xl min-w-[300px]">
       <CheckCircle size={17} color={C.tealAccent} />
-      <p style={{ margin: 0, fontSize: 13.5, color: "#fff", fontWeight: 500 }}>
-        {msg}
-      </p>
-      <button
-        onClick={hide}
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "rgba(255,255,255,0.45)",
-          marginLeft: "auto",
-          padding: 0,
-          display: "flex",
-        }}
-      >
+      <p className="m-0 text-[13.5px] text-white font-medium">{msg}</p>
+      <button onClick={hide} className="bg-none border-none cursor-pointer text-white/45 ml-auto p-0 flex">
         <X size={14} />
       </button>
     </div>
   );
 };
 
-/* ══════════════════════════════════════════════
-   HERO LEFT — GSAP entrance
-══════════════════════════════════════════════ */
+/* ── Hero Left ── */
 const HeroLeft = () => {
   const wrapRef = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
       const items = wrapRef.current.querySelectorAll(".cp-hero-item");
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.1 },
-      );
+      gsap.fromTo(items, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.1 });
     }, wrapRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={wrapRef} style={{ maxWidth: 600 }}>
-      {/* Trust bar */}
-      <div
-        className="cp-hero-item"
-        style={{
-          display: "flex",
-          gap: 24,
-          marginBottom: 36,
-          flexWrap: "wrap",
-          opacity: 0,
-        }}
-      >
-        {[
-          { icon: Shield, label: "UK-Based Support" },
-          { icon: CheckCircle, label: "GDPR Compliant" },
-          { icon: Star, label: "5-Star Rated" },
-        ].map(({ icon: Icon, label }) => (
-          <div
-            key={label}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 7,
-              color: "rgba(255,255,255,0.52)",
-              fontSize: 13,
-              fontWeight: 500,
-            }}
-          >
+    <div ref={wrapRef} className="max-w-[600px]">
+      <div className="cp-hero-item flex gap-6 mb-9 flex-wrap opacity-0">
+        {[{ icon: Shield, label: "UK-Based Support" }, { icon: CheckCircle, label: "GDPR Compliant" }, { icon: Star, label: "5-Star Rated" }].map(({ icon: Icon, label }) => (
+          <div key={label} className="flex items-center gap-1.5 text-white/52 text-[13px] font-medium">
             <Icon size={13} color={C.tealAccent} />
             {label}
           </div>
         ))}
       </div>
 
-      <div className="cp-hero-item" style={{ marginBottom: 20, opacity: 0 }}>
+      <div className="cp-hero-item mb-5 opacity-0">
         <Badge>Contact Us</Badge>
       </div>
 
-      <h1
-        className="cp-hero-item"
-        style={{
-          fontFamily: "'Sora',sans-serif",
-          fontSize: "clamp(2.5rem,5vw,4rem)",
-          fontWeight: 800,
-          lineHeight: 1.07,
-          letterSpacing: "-0.04em",
-          color: "#fff",
-          margin: "0 0 8px",
-          opacity: 0,
-        }}
-      >
+      <h1 className="cp-hero-item font-sans text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.07] tracking-[-0.04em] text-white m-0 mb-2 opacity-0">
         Let's Build Something
       </h1>
-      <h1
-        className="cp-hero-item"
-        style={{
-          fontFamily: "'Sora',sans-serif",
-          fontSize: "clamp(2.5rem,5vw,4rem)",
-          fontWeight: 800,
-          lineHeight: 1.07,
-          letterSpacing: "-0.04em",
-          margin: "0 0 8px",
-          opacity: 0,
-        }}
-      >
+      <h1 className="cp-hero-item font-sans text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.07] tracking-[-0.04em] m-0 mb-2 opacity-0">
         <GText>Great Together.</GText>
       </h1>
 
-      <p
-        className="cp-hero-item"
-        style={{
-          fontFamily: "'DM Sans',sans-serif",
-          fontSize: "1.0625rem",
-          color: "rgba(255,255,255,0.52)",
-          lineHeight: 1.75,
-          maxWidth: 460,
-          margin: "22px 0 36px",
-          opacity: 0,
-        }}
-      >
-        Our UK HR-tech specialists are ready to help. Whether you're looking for
-        a demo, need compliance advice, or want to explore the platform — get in
-        touch today.
+      <p className="cp-hero-item font-dm-sans text-[1.0625rem] text-white/52 leading-relaxed max-w-[460px] my-5 mb-9 opacity-0">
+        Our UK HR-tech specialists are ready to help. Whether you're looking for a demo, need compliance advice, or want to explore the platform — get in touch today.
       </p>
 
-      {/* CTAs */}
-      <div
-        className="cp-hero-item"
-        style={{ display: "flex", gap: 12, flexWrap: "wrap", opacity: 0 }}
-      >
-        <button href="#contact-form" className="cp-btn-teal btn-slide-bg">
+      <div className="cp-hero-item flex gap-3 flex-wrap opacity-0">
+        <a href="#contact-form" className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-sans text-[0.9rem] font-bold rounded-xl cursor-pointer shadow-[0_4px_20px_rgba(20,184,166,0.38)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(20,184,166,0.50)] btn-slide-bg">
           Send a Message <ArrowRight size={15} strokeWidth={2.5} />
-        </button>
-        <button
-          href="tel:+442012345678"
-          className="cp-btn-ghost btn-slide-bg btn-outline"
-        >
+        </a>
+        <a href="tel:+442012345678" className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-white/10 backdrop-blur-md text-white/85 font-sans text-[0.9rem] font-semibold rounded-xl border border-white/20 cursor-pointer transition-all duration-200 hover:bg-white/15 hover:-translate-y-1 ">
           <Phone size={15} strokeWidth={2.5} /> Call Us Now
-        </button>
+        </a>
       </div>
 
-      {/* Response badge */}
-      <div
-        className="cp-hero-item"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 10,
-          marginTop: 28,
-          padding: "9px 16px 9px 9px",
-          background: "rgba(255,255,255,0.07)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255,255,255,0.12)",
-          borderRadius: 999,
-          opacity: 0,
-        }}
-      >
-        <div
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg,#1E3A8A,#14B8A6)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
-        >
+      <div className="cp-hero-item inline-flex items-center gap-2.5 mt-7 py-2 px-4 bg-white/7 backdrop-blur-md border border-white/12 rounded-full opacity-0">
+        <div className="w-7.5 h-7.5 rounded-full bg-gradient-to-br from-[#1E3A8A] to-[#14B8A6] flex items-center justify-center flex-shrink-0">
           <Zap size={13} color="#fff" strokeWidth={2.5} />
         </div>
-        <span
-          style={{
-            fontFamily: "'DM Sans',sans-serif",
-            fontSize: "0.8125rem",
-            color: "rgba(255,255,255,0.70)",
-          }}
-        >
-          Average response time:{" "}
-          <strong style={{ color: "#14B8A6" }}>under 2 hours</strong>
+        <span className="font-dm-sans text-[0.8125rem] text-white/70">
+          Average response time: <strong className="text-teal-500">under 2 hours</strong>
         </span>
       </div>
     </div>
   );
 };
 
-/* ══════════════════════════════════════════════
-   HERO RIGHT WRAPPER — entrance animation
-══════════════════════════════════════════════ */
+/* ── Hero Right ── */
 const HeroRight = () => {
   const wrapRef = useRef(null);
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        wrapRef.current,
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.75, ease: "power3.out", delay: 0.2 },
-      );
+      gsap.fromTo(wrapRef.current, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.75, ease: "power3.out", delay: 0.2 });
     }, wrapRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <div
-      ref={wrapRef}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative",
-        width: 420,
-        height: 420,
-        opacity: 0,
-        flexShrink: 0,
-      }}
-    >
-      {/* Outer ambient glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle,rgba(20,184,166,0.08),transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
+    <div ref={wrapRef} className="flex items-center justify-center relative w-[420px] h-[420px] flex-shrink-0 opacity-0">
+      <div className="absolute inset-0 rounded-full bg-radial from-teal-500/8 to-transparent pointer-events-none" />
 
-      {/* Floating chips */}
-      <FloatingChip
-        text="2hr Response"
-        Icon={Clock}
-        color="#14B8A6"
-        delay={0.9}
-        style={{ left: -10, top: 20 }}
-      />
-      <FloatingChip
-        text="GDPR Safe"
-        Icon={Shield}
-        color="#3B82F6"
-        delay={1.1}
-        style={{ right: -10, top: 16 }}
-      />
-      <FloatingChip
-        text="UK-Based"
-        Icon={MapPin}
-        color="#1E3A8A"
-        delay={1.3}
-        style={{ right: -10, bottom: 60 }}
-      />
-      <FloatingChip
-        text="5★ Rated"
-        Icon={Star}
-        color="#F59E0B"
-        delay={1.5}
-        style={{ left: -10, bottom: 56 }}
-      />
+      <FloatingChip text="2hr Response" Icon={Clock} color="#14B8A6" delay={0.9} style={{ left: -10, top: 20 }} />
+      <FloatingChip text="GDPR Safe" Icon={Shield} color="#3B82F6" delay={1.1} style={{ right: -10, top: 16 }} />
+      <FloatingChip text="UK-Based" Icon={MapPin} color="#1E3A8A" delay={1.3} style={{ right: -10, bottom: 60 }} />
+      <FloatingChip text="5★ Rated" Icon={Star} color="#F59E0B" delay={1.5} style={{ left: -10, bottom: 56 }} />
 
-      {/* Stat floats */}
-      <StatFloat
-        val="500+"
-        label="UK clients"
-        delay={0.8}
-        style={{ left: -80, top: 100 }}
-      />
-      <StatFloat
-        val="98%"
-        label="Satisfaction"
-        delay={1.0}
-        style={{ right: -80, top: 120 }}
-      />
+      <StatFloat val="500+" label="UK clients" delay={0.8} style={{ left: -80, top: 100 }} />
+      <StatFloat val="98%" label="Satisfaction" delay={1.0} style={{ right: -80, top: 120 }} />
 
-      {/* ── The network visual, centred inside this 420×420 box ── */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          /* We move by exactly half the visual's SIZE (340/2 = 170) */
-          marginTop: -(SIZE / 2),
-          marginLeft: -(SIZE / 2),
-        }}
-      >
+      <div className="absolute top-1/2 left-1/2 -mt-[170px] -ml-[170px]">
         <ContactHeroVisual />
       </div>
     </div>
@@ -1020,362 +475,102 @@ const HeroRight = () => {
    MAIN PAGE
 ══════════════════════════════════════════════ */
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "", subject: "", message: "" });
   const [focused, setFocused] = useState(null);
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleChange = (e) =>
-    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+  const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
   const handleSubmit = (e) => {
     e.preventDefault();
     setSending(true);
     setTimeout(() => {
       setSending(false);
       setToast({ msg: "Message sent! We'll reply within 2 hours." });
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        subject: "",
-        message: "",
-      });
+      setFormData({ name: "", email: "", phone: "", company: "", subject: "", message: "" });
       setTimeout(() => setToast(null), 5000);
     }, 1600);
   };
 
-  /* Hover helpers using GSAP */
-  const hoverIn = (e) =>
-    gsap.to(e.currentTarget, {
-      y: -5,
-      boxShadow: "0 16px 36px rgba(30,58,138,0.12)",
-      duration: 0.25,
-      ease: "power2.out",
-    });
-  const hoverOut = (e) =>
-    gsap.to(e.currentTarget, {
-      y: 0,
-      boxShadow: "0 2px 8px rgba(30,58,138,0.05)",
-      duration: 0.2,
-      ease: "power2.in",
-    });
-  const btnIn = (e) =>
-    gsap.to(e.currentTarget, {
-      scale: 1.015,
-      y: -2,
-      duration: 0.2,
-      ease: "power2.out",
-    });
-  const btnOut = (e) =>
-    gsap.to(e.currentTarget, {
-      scale: 1,
-      y: 0,
-      duration: 0.2,
-      ease: "power2.in",
-    });
-  const btnTap = (e) =>
-    gsap.to(e.currentTarget, { scale: 0.97, duration: 0.08 });
+  const hoverIn = (e) => gsap.to(e.currentTarget, { y: -5, boxShadow: "0 16px 36px rgba(30,58,138,0.12)", duration: 0.25, ease: "power2.out" });
+  const hoverOut = (e) => gsap.to(e.currentTarget, { y: 0, boxShadow: "0 2px 8px rgba(30,58,138,0.05)", duration: 0.2, ease: "power2.in" });
+  const btnIn = (e) => gsap.to(e.currentTarget, { scale: 1.015, y: -2, duration: 0.2, ease: "power2.out" });
+  const btnOut = (e) => gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.2, ease: "power2.in" });
+  const btnTap = (e) => gsap.to(e.currentTarget, { scale: 0.97, duration: 0.08 });
 
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500); // Simulate loading for 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <PageLoader />;
-  }
+  if (loading) return <PageLoader />;
 
   return (
-    <div
-      style={{
-        fontFamily: "'DM Sans',sans-serif",
-        background: C.bgMain,
-        color: C.textPrimary,
-        overflowX: "hidden",
-      }}
-    >
+    <div className="font-dm-sans overflow-x-hidden" style={{ background: C.bgMain, color: C.textPrimary }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
-        @keyframes cp-pulse  { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.65)} }
-        @keyframes cp-spin   { to{transform:rotate(360deg)} }
-        @keyframes cp-grid   { 0%{background-position:0 0} 100%{background-position:32px 32px} }
-        * { box-sizing: border-box; }
+        @keyframes cp-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.65)} }
+        @keyframes cp-spin { to{transform:rotate(360deg)} }
+        @keyframes cp-grid { 0%{background-position:0 0} 100%{background-position:32px 32px} }
+        *, *::before, *::after { box-sizing: border-box; }
         input, textarea, select, button { font-family: inherit; }
-        a { text-decoration: none; }
-
-        .cp-btn-teal {
-          display: inline-flex; align-items: center; gap: 9px;
-        //   padding: 0.875rem 1.875rem;
-          background: linear-gradient(135deg,#14B8A6,#0d9488);
-          color: #fff; font-family: 'Sora',sans-serif; font-size: 0.9rem; font-weight: 700;
-          border-radius: 12px; border: none; cursor: pointer;
-          box-shadow: 0 4px 20px rgba(20,184,166,0.38);
-          letter-spacing: 0.005em;
-          transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease, filter 0.2s ease;
-        }
-        .cp-btn-teal:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(20,184,166,0.50); filter: brightness(1.07); }
-
-        .cp-btn-ghost {
-          display: inline-flex; align-items: center; gap: 9px;
-          padding: 0.875rem 1.5rem;
-          background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.85);
-          font-family: 'Sora',sans-serif; font-size: 0.9rem; font-weight: 600;
-          border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.20); cursor: pointer;
-          backdrop-filter: blur(8px);
-          transition: background 0.2s ease, transform 0.2s ease;
-        }
-        .cp-btn-ghost:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
-
-        .cp-qcard {
-          display: block; text-decoration: none;
-          background: #fff; border: 1px solid rgba(30,58,138,0.12);
-          border-radius: 20px; padding: 1.75rem 1.5rem;
-          box-shadow: 0 2px 8px rgba(30,58,138,0.05);
-          transition: box-shadow 0.25s ease;
-        }
-        .cp-feature-input {
-          width: 100%; padding: 11px 14px; border-radius: 10px;
-          font-size: 14px; outline: none;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
-          background: #F0F4FF; color: #111827;
-        }
+        .bg-radial { background: radial-gradient(circle, rgba(20,184,166,0.08), transparent 70%); }
+        .bg-white\\/7 { background: rgba(255,255,255,0.07); }
       `}</style>
 
-      {/* ── Toast ── */}
       {toast && <Toast msg={toast.msg} onClose={() => setToast(null)} />}
 
-      {/* ══════════════════
-          HERO
-      ══════════════════ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background:
-            "linear-gradient(135deg,#040d26 0%,#0c1a4a 55%,#083030 100%)",
-          paddingTop: 100,
-          paddingBottom: 90,
-        }}
-      >
-        {/* Animated dot grid */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            animation: "cp-grid 8s linear infinite",
-          }}
-        />
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#040d26] via-[#0c1a4a] to-[#083030] pt-10 pb-22.5">
+        <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(rgba(255,255,255,0.9)_1px,transparent_1px)] bg-[size:32px_32px] animate-[cp-grid_8s_linear_infinite]" />
+        
+        <div className="absolute -top-[120px] -right-20 w-[500px] h-[500px] rounded-full bg-radial from-blue-500/18 to-transparent blur-[55px] pointer-events-none" />
+        <div className="absolute -bottom-25 -left-20 w-[440px] h-[440px] rounded-full bg-radial from-teal-500/14 to-transparent blur-[55px] pointer-events-none" />
+        <div className="absolute top-[30%] left-[40%] w-[300px] h-[300px] rounded-full bg-radial from-[#1E3A8A]/12 to-transparent blur-[55px] pointer-events-none" />
+        
+        <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: C.gradientBrand }} />
 
-        {/* Blobs */}
-        {[
-          {
-            style: {
-              top: -120,
-              right: -80,
-              width: 500,
-              height: 500,
-              background:
-                "radial-gradient(circle,rgba(59,130,246,0.18),transparent 70%)",
-            },
-          },
-          {
-            style: {
-              bottom: -100,
-              left: -80,
-              width: 440,
-              height: 440,
-              background:
-                "radial-gradient(circle,rgba(20,184,166,0.14),transparent 70%)",
-            },
-          },
-          {
-            style: {
-              top: "30%",
-              left: "40%",
-              width: 300,
-              height: 300,
-              background:
-                "radial-gradient(circle,rgba(30,58,138,0.12),transparent 70%)",
-            },
-          },
-        ].map((b, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              borderRadius: "50%",
-              filter: "blur(55px)",
-              pointerEvents: "none",
-              ...b.style,
-            }}
-          />
-        ))}
-
-        {/* Top accent bar */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 3,
-            background: C.gradientBrand,
-          }}
-        />
-
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            padding: "0 2rem",
-            position: "relative",
-            zIndex: 10,
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              gap: "3rem",
-              alignItems: "center",
-            }}
-          >
+        <div className="max-w-7xl mx-auto px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-center">
             <HeroLeft />
             <HeroRight />
           </div>
         </div>
       </section>
 
-      {/* ══════════════════
-          QUICK CONTACT CARDS
-      ══════════════════ */}
-      <section style={{ padding: "5rem 2rem", background: C.bgSection }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <Reveal style={{ textAlign: "center", marginBottom: 52 }}>
+      {/* Quick Contact Cards */}
+      <section className="py-20 px-8" style={{ background: C.bgSection }}>
+        <div className="max-w-7xl mx-auto">
+          <Reveal className="text-center mb-13">
             <Badge>Quick Contact</Badge>
-            <h2
-              style={{
-                fontFamily: "'Sora',sans-serif",
-                fontSize: "clamp(1.75rem,3.5vw,2.5rem)",
-                fontWeight: 800,
-                letterSpacing: "-0.035em",
-                color: C.textPrimary,
-                margin: "16px 0 12px",
-              }}
-            >
+            <h2 className="font-sans text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold tracking-[-0.035em] mt-4 mb-3" style={{ color: C.textPrimary }}>
               Reach us <GText>instantly</GText>
             </h2>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: C.textSecondary,
-                maxWidth: 420,
-                margin: "0 auto",
-                lineHeight: 1.7,
-              }}
-            >
-              Multiple channels, one mission — to get you the help you need,
-              fast.
+            <p className="text-base max-w-[420px] mx-auto leading-relaxed" style={{ color: C.textSecondary }}>
+              Multiple channels, one mission — to get you the help you need, fast.
             </p>
           </Reveal>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-              gap: "1.125rem",
-            }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[1.125rem]">
             {quickContacts.map((c, i) => (
               <Reveal key={c.label} delay={i * 0.08}>
                 <a
                   href={c.href}
-                  className="cp-qcard"
+                  className="block no-underline bg-white border rounded-2xl p-7 shadow-sm transition-all duration-250 hover:-translate-y-1 hover:shadow-xl"
+                  style={{ borderColor: C.border }}
                   onMouseEnter={hoverIn}
                   onMouseLeave={hoverOut}
                   target={c.href?.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
                 >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 13,
-                      marginBottom: 18,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      border: `1px solid ${c.accent}22`,
-                      background: c.bg,
-                    }}
-                  >
+                  <div className="w-12 h-12 rounded-xl mb-[18px] flex items-center justify-center border border-opacity-10" style={{ borderColor: `${c.accent}22`, background: c.bg }}>
                     <c.icon size={21} color={c.accent} strokeWidth={2} />
                   </div>
-                  <p
-                    style={{
-                      fontFamily: "'Sora',sans-serif",
-                      fontSize: "0.68rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: c.accent,
-                      margin: "0 0 6px",
-                    }}
-                  >
-                    {c.label}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'Sora',sans-serif",
-                      fontSize: "0.9375rem",
-                      fontWeight: 700,
-                      color: C.textPrimary,
-                      margin: "0 0 4px",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {c.value}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "'DM Sans',sans-serif",
-                      fontSize: 12.5,
-                      color: C.textSecondary,
-                      margin: "0 0 18px",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {c.sub}
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      paddingTop: 14,
-                      borderTop: `1px solid ${C.border}`,
-                      fontFamily: "'Sora',sans-serif",
-                      fontSize: 12.5,
-                      fontWeight: 700,
-                      color: c.accent,
-                    }}
-                  >
+                  <p className="font-sans text-[0.68rem] font-bold tracking-[0.08em] uppercase mb-1.5" style={{ color: c.accent }}>{c.label}</p>
+                  <p className="font-sans text-[0.9375rem] font-bold m-0 mb-1 leading-tight" style={{ color: C.textPrimary }}>{c.value}</p>
+                  <p className="font-dm-sans text-[12.5px] m-0 mb-[18px] leading-relaxed" style={{ color: C.textSecondary }}>{c.sub}</p>
+                  <div className="flex items-center gap-1.5 pt-3.5 border-t font-sans text-[12.5px] font-bold" style={{ borderTopColor: C.border, color: c.accent }}>
                     {c.cta} <ArrowRight size={11} strokeWidth={2.5} />
                   </div>
                 </a>
@@ -1385,277 +580,83 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* ══════════════════
-          FORM + DEPARTMENTS
-      ══════════════════ */}
-      <section
-        id="contact-form"
-        style={{ padding: "5rem 2rem 6rem", background: C.bgMain }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.15fr 0.85fr",
-              gap: "3rem",
-              alignItems: "start",
-            }}
-          >
-            {/* ── Form ── */}
+      {/* Form + Departments */}
+      <section id="contact-form" className="py-20 pb-24 px-8" style={{ background: C.bgMain }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-start">
+            {/* Form */}
             <Reveal>
-              <div
-                style={{
-                  background: C.bgCard,
-                  border: `1px solid ${C.border}`,
-                  borderRadius: 20,
-                  overflow: "hidden",
-                  boxShadow: "0 4px 24px rgba(30,58,138,0.07)",
-                }}
-              >
-                {/* Form header */}
-                <div
-                  style={{
-                    padding: "2rem 2rem 1.75rem",
-                    background: C.gradientBrand,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
+              <div className="bg-white border rounded-2xl overflow-hidden shadow-md" style={{ borderColor: C.border }}>
+                <div className="p-8 pb-7 flex items-center justify-between" style={{ background: C.gradientBrand }}>
                   <div>
-                    <h3
-                      style={{
-                        fontFamily: "'Sora',sans-serif",
-                        fontSize: "1.25rem",
-                        fontWeight: 700,
-                        color: "#fff",
-                        margin: "0 0 6px",
-                      }}
-                    >
-                      Send a Message
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: "'DM Sans',sans-serif",
-                        fontSize: 13.5,
-                        color: "rgba(255,255,255,0.65)",
-                        margin: 0,
-                      }}
-                    >
-                      We'll respond within 2 hours on business days
-                    </p>
+                    <h3 className="font-sans text-xl font-bold text-white m-0 mb-1.5">Send a Message</h3>
+                    <p className="font-dm-sans text-[13.5px] text-white/65 m-0">We'll respond within 2 hours on business days</p>
                   </div>
-                  <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      background: "rgba(255,255,255,0.15)",
-                      border: "1px solid rgba(255,255,255,0.20)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <div className="w-11 h-11 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center">
                     <Send size={18} color="#fff" />
                   </div>
                 </div>
 
-                <form
-                  onSubmit={handleSubmit}
-                  style={{ padding: "1.75rem 2rem" }}
-                >
-                  {/* Name + Email */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                      marginBottom: 16,
-                    }}
-                  >
-                    {[
-                      {
-                        name: "name",
-                        label: "Full Name",
-                        icon: User,
-                        placeholder: "Jane Smith",
-                        type: "text",
-                        required: true,
-                      },
-                      {
-                        name: "email",
-                        label: "Email Address",
-                        icon: Mail,
-                        placeholder: "jane@company.co.uk",
-                        type: "email",
-                        required: true,
-                      },
-                    ].map((f) => (
+                <form onSubmit={handleSubmit} className="p-7 pb-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {[{ name: "name", label: "Full Name", icon: User, placeholder: "Jane Smith", type: "text", required: true },
+                      { name: "email", label: "Email Address", icon: Mail, placeholder: "jane@company.co.uk", type: "email", required: true }].map((f) => (
                       <div key={f.name}>
-                        <label
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 5,
-                            fontFamily: "'Sora',sans-serif",
-                            fontSize: "0.68rem",
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.07em",
-                            color: C.primaryBlue,
-                            marginBottom: 8,
-                          }}
-                        >
-                          <f.icon size={11} color={C.secondaryBlue} /> {f.label}{" "}
-                          {f.required && "*"}
+                        <label className="flex items-center gap-1 font-sans text-[0.68rem] font-bold uppercase tracking-[0.07em] mb-2" style={{ color: C.primaryBlue }}>
+                          <f.icon size={11} color={C.secondaryBlue} /> {f.label} {f.required && "*"}
                         </label>
                         <input
-                          name={f.name}
-                          type={f.type}
-                          required={f.required}
-                          placeholder={f.placeholder}
-                          value={formData[f.name]}
-                          onChange={handleChange}
-                          onFocus={() => setFocused(f.name)}
-                          onBlur={() => setFocused(null)}
-                          className="cp-feature-input"
+                          name={f.name} type={f.type} required={f.required} placeholder={f.placeholder}
+                          value={formData[f.name]} onChange={handleChange}
+                          onFocus={() => setFocused(f.name)} onBlur={() => setFocused(null)}
+                          className="w-full px-3.5 py-2.5 rounded-lg text-sm outline-none transition-all duration-200 bg-[#F0F4FF]"
                           style={{
                             border: `1px solid ${focused === f.name ? C.tealAccent : C.border}`,
-                            boxShadow:
-                              focused === f.name
-                                ? "0 0 0 3px rgba(20,184,166,0.12)"
-                                : "none",
+                            boxShadow: focused === f.name ? "0 0 0 3px rgba(20,184,166,0.12)" : "none",
                           }}
                         />
                       </div>
                     ))}
                   </div>
 
-                  {/* Phone + Company */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                      marginBottom: 16,
-                    }}
-                  >
-                    {[
-                      {
-                        name: "phone",
-                        label: "Phone",
-                        icon: Phone,
-                        placeholder: "+44 20 1234 5678",
-                        type: "tel",
-                      },
-                      {
-                        name: "company",
-                        label: "Company",
-                        icon: Building,
-                        placeholder: "Acme Ltd",
-                        type: "text",
-                      },
-                    ].map((f) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {[{ name: "phone", label: "Phone", icon: Phone, placeholder: "+44 20 1234 5678", type: "tel" },
+                      { name: "company", label: "Company", icon: Building, placeholder: "Acme Ltd", type: "text" }].map((f) => (
                       <div key={f.name}>
-                        <label
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 5,
-                            fontFamily: "'Sora',sans-serif",
-                            fontSize: "0.68rem",
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.07em",
-                            color: C.primaryBlue,
-                            marginBottom: 8,
-                          }}
-                        >
+                        <label className="flex items-center gap-1 font-sans text-[0.68rem] font-bold uppercase tracking-[0.07em] mb-2" style={{ color: C.primaryBlue }}>
                           <f.icon size={11} color={C.secondaryBlue} /> {f.label}
                         </label>
                         <input
-                          name={f.name}
-                          type={f.type}
-                          placeholder={f.placeholder}
-                          value={formData[f.name]}
-                          onChange={handleChange}
-                          onFocus={() => setFocused(f.name)}
-                          onBlur={() => setFocused(null)}
-                          className="cp-feature-input"
+                          name={f.name} type={f.type} placeholder={f.placeholder}
+                          value={formData[f.name]} onChange={handleChange}
+                          onFocus={() => setFocused(f.name)} onBlur={() => setFocused(null)}
+                          className="w-full px-3.5 py-2.5 rounded-lg text-sm outline-none transition-all duration-200 bg-[#F0F4FF]"
                           style={{
                             border: `1px solid ${focused === f.name ? C.tealAccent : C.border}`,
-                            boxShadow:
-                              focused === f.name
-                                ? "0 0 0 3px rgba(20,184,166,0.12)"
-                                : "none",
+                            boxShadow: focused === f.name ? "0 0 0 3px rgba(20,184,166,0.12)" : "none",
                           }}
                         />
                       </div>
                     ))}
                   </div>
 
-                  {/* Subject pills */}
-                  <div style={{ marginBottom: 16 }}>
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 5,
-                        fontFamily: "'Sora',sans-serif",
-                        fontSize: "0.68rem",
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.07em",
-                        color: C.primaryBlue,
-                        marginBottom: 8,
-                      }}
-                    >
+                  <div className="mb-4">
+                    <label className="flex items-center gap-1 font-sans text-[0.68rem] font-bold uppercase tracking-[0.07em] mb-2" style={{ color: C.primaryBlue }}>
                       <Briefcase size={11} color={C.secondaryBlue} /> Subject *
                     </label>
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(3,1fr)",
-                        gap: 8,
-                      }}
-                    >
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {subjects.map((s) => (
                         <button
-                          key={s}
-                          type="button"
-                          onClick={() =>
-                            setFormData((p) => ({ ...p, subject: s }))
-                          }
-                          onMouseEnter={(e) =>
-                            gsap.to(e.currentTarget, {
-                              scale: 1.03,
-                              duration: 0.18,
-                              ease: "back.out(2)",
-                            })
-                          }
-                          onMouseLeave={(e) =>
-                            gsap.to(e.currentTarget, {
-                              scale: 1,
-                              duration: 0.15,
-                              ease: "power2.in",
-                            })
-                          }
+                          key={s} type="button"
+                          onClick={() => setFormData((p) => ({ ...p, subject: s }))}
+                          className="px-2.5 py-2 rounded-lg text-[12.5px] font-semibold cursor-pointer transition-all duration-180"
                           style={{
-                            padding: "9px 10px",
-                            borderRadius: 9,
-                            fontSize: 12.5,
-                            fontFamily: "'Sora',sans-serif",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                            background:
-                              formData.subject === s ? C.primaryBlue : C.bgMain,
-                            color:
-                              formData.subject === s ? "#fff" : C.textSecondary,
+                            background: formData.subject === s ? C.primaryBlue : C.bgMain,
+                            color: formData.subject === s ? "#fff" : C.textSecondary,
                             border: `1px solid ${formData.subject === s ? C.primaryBlue : C.border}`,
-                            transition:
-                              "background 0.18s ease, color 0.18s ease, border-color 0.18s ease",
                           }}
+                          onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.03, duration: 0.18, ease: "back.out(2)" })}
+                          onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.15, ease: "power2.in" })}
                         >
                           {s}
                         </button>
@@ -1663,284 +664,86 @@ const ContactPage = () => {
                     </div>
                   </div>
 
-                  {/* Message */}
-                  <div style={{ marginBottom: 24 }}>
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 5,
-                        fontFamily: "'Sora',sans-serif",
-                        fontSize: "0.68rem",
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.07em",
-                        color: C.primaryBlue,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <MessageSquare size={11} color={C.secondaryBlue} />{" "}
-                      Message *
+                  <div className="mb-6">
+                    <label className="flex items-center gap-1 font-sans text-[0.68rem] font-bold uppercase tracking-[0.07em] mb-2" style={{ color: C.primaryBlue }}>
+                      <MessageSquare size={11} color={C.secondaryBlue} /> Message *
                     </label>
                     <textarea
-                      name="message"
-                      rows={4}
-                      required
+                      name="message" rows={4} required
                       placeholder="Tell us how we can help you..."
-                      value={formData.message}
-                      onChange={handleChange}
-                      onFocus={() => setFocused("message")}
-                      onBlur={() => setFocused(null)}
-                      className="cp-feature-input"
+                      value={formData.message} onChange={handleChange}
+                      onFocus={() => setFocused("message")} onBlur={() => setFocused(null)}
+                      className="w-full px-3.5 py-2.5 rounded-lg text-sm outline-none transition-all duration-200 bg-[#F0F4FF] resize-none"
                       style={{
-                        resize: "none",
                         border: `1px solid ${focused === "message" ? C.tealAccent : C.border}`,
-                        boxShadow:
-                          focused === "message"
-                            ? "0 0 0 3px rgba(20,184,166,0.12)"
-                            : "none",
+                        boxShadow: focused === "message" ? "0 0 0 3px rgba(20,184,166,0.12)" : "none",
                       }}
                     />
                   </div>
 
-                  {/* Submit */}
                   <button
-                    type="submit"
-                    disabled={sending}
+                    type="submit" disabled={sending}
                     onMouseEnter={!sending ? btnIn : undefined}
                     onMouseLeave={!sending ? btnOut : undefined}
                     onMouseDown={!sending ? btnTap : undefined}
+                    className="w-full py-3.5 px-6 rounded-xl border-none font-sans font-bold text-[15px] flex items-center justify-center gap-2.5 transition-all duration-200"
                     style={{
-                      width: "100%",
-                      padding: "14px 24px",
-                      borderRadius: 12,
-                      border: "none",
-                      fontFamily: "'Sora',sans-serif",
-                      fontWeight: 700,
-                      fontSize: 15,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
                       background: sending ? "#94A3B8" : C.gradientBrand,
                       color: "#fff",
                       cursor: sending ? "not-allowed" : "pointer",
-                      boxShadow: sending
-                        ? "none"
-                        : "0 4px 20px rgba(30,58,138,0.28)",
-                      transition: "background 0.2s ease",
+                      boxShadow: sending ? "none" : "0 4px 20px rgba(30,58,138,0.28)",
                     }}
                   >
                     {sending ? (
-                      <>
-                        <div
-                          style={{
-                            width: 15,
-                            height: 15,
-                            borderRadius: "50%",
-                            border: "2px solid rgba(255,255,255,0.35)",
-                            borderTopColor: "#fff",
-                            animation: "cp-spin 0.7s linear infinite",
-                          }}
-                        />
-                        Sending…
-                      </>
-                    ) : (
-                      <>
-                        Send Message <Send size={15} />
-                      </>
-                    )}
+                      <><div className="w-[15px] h-[15px] rounded-full border-2 border-white/35 border-t-white animate-[cp-spin_0.7s_linear_infinite]" /> Sending…</>
+                    ) : (<>Send Message <Send size={15} /></>)}
                   </button>
-                  <p
-                    style={{
-                      textAlign: "center",
-                      fontSize: 12,
-                      color: C.textSecondary,
-                      marginTop: 12,
-                    }}
-                  >
-                    By submitting you agree to our{" "}
-                    <a
-                      href="#"
-                      style={{ color: C.tealAccent, fontWeight: 600 }}
-                    >
-                      Privacy Policy
-                    </a>
+                  <p className="text-center text-xs mt-3" style={{ color: C.textSecondary }}>
+                    By submitting you agree to our <a href="#" className="font-semibold" style={{ color: C.tealAccent }}>Privacy Policy</a>
                   </p>
                 </form>
               </div>
             </Reveal>
 
-            {/* ── Departments ── */}
+            {/* Departments */}
             <div>
-              <Reveal style={{ marginBottom: 28 }}>
+              <Reveal className="mb-7">
                 <Badge>Department Contacts</Badge>
-                <h3
-                  style={{
-                    fontFamily: "'Sora',sans-serif",
-                    fontSize: "clamp(1.5rem,3vw,2rem)",
-                    fontWeight: 800,
-                    letterSpacing: "-0.03em",
-                    color: C.textPrimary,
-                    margin: "16px 0 10px",
-                  }}
-                >
+                <h3 className="font-sans text-[clamp(1.5rem,3vw,2rem)] font-extrabold tracking-[-0.03em] mt-4 mb-2.5" style={{ color: C.textPrimary }}>
                   Talk to the <GText>right team</GText>
                 </h3>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans',sans-serif",
-                    fontSize: 15,
-                    color: C.textSecondary,
-                    lineHeight: 1.7,
-                  }}
-                >
+                <p className="font-dm-sans text-[15px] leading-relaxed" style={{ color: C.textSecondary }}>
                   Route your query directly to the specialist who can help most.
                 </p>
               </Reveal>
 
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 14 }}
-              >
+              <div className="flex flex-col gap-3.5">
                 {departments.map((d, i) => (
                   <Reveal key={d.title} delay={i * 0.09}>
                     <div
-                      style={{
-                        position: "relative",
-                        overflow: "hidden",
-                        borderRadius: 16,
-                        padding: "1.375rem 1.375rem 1.375rem 1.75rem",
-                        background: C.bgCard,
-                        border: `1px solid ${C.border}`,
-                        boxShadow: "0 2px 8px rgba(30,58,138,0.05)",
-                      }}
+                      className="relative overflow-hidden rounded-xl p-5 pl-7 bg-white border shadow-sm transition-all duration-250 hover:-translate-y-1 hover:shadow-xl"
+                      style={{ borderColor: C.border }}
                       onMouseEnter={hoverIn}
                       onMouseLeave={hoverOut}
                     >
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          bottom: 0,
-                          width: 3,
-                          background: C.gradientBrand,
-                        }}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: 14,
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 42,
-                            height: 42,
-                            borderRadius: 12,
-                            flexShrink: 0,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            border: `1px solid ${C.border}`,
-                            background:
-                              "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(20,184,166,0.06))",
-                          }}
-                        >
-                          <d.icon
-                            size={19}
-                            color={C.tealAccent}
-                            strokeWidth={2}
-                          />
+                      <div className="absolute top-0 left-0 bottom-0 w-[3px]" style={{ background: C.gradientBrand }} />
+                      <div className="flex items-start gap-3.5">
+                        <div className="w-10.5 h-10.5 rounded-xl flex-shrink-0 flex items-center justify-center border" style={{ borderColor: C.border, background: "linear-gradient(135deg,rgba(30,58,138,0.08),rgba(20,184,166,0.06))" }}>
+                          <d.icon size={19} color={C.tealAccent} strokeWidth={2} />
                         </div>
-                        <div style={{ flex: 1 }}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              marginBottom: 6,
-                            }}
-                          >
-                            <h4
-                              style={{
-                                fontFamily: "'Sora',sans-serif",
-                                fontSize: 15,
-                                fontWeight: 700,
-                                color: C.textPrimary,
-                                margin: 0,
-                              }}
-                            >
-                              {d.title}
-                            </h4>
-                            <span
-                              style={{
-                                fontFamily: "'Sora',sans-serif",
-                                fontSize: "0.62rem",
-                                fontWeight: 700,
-                                letterSpacing: "0.07em",
-                                textTransform: "uppercase",
-                                padding: "2px 8px",
-                                borderRadius: 999,
-                                background: "rgba(20,184,166,0.10)",
-                                border: "1px solid rgba(20,184,166,0.20)",
-                                color: "#0d9488",
-                              }}
-                            >
-                              {d.tag}
-                            </span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <h4 className="font-sans text-[15px] font-bold m-0" style={{ color: C.textPrimary }}>{d.title}</h4>
+                            <span className="font-sans text-[0.62rem] font-bold tracking-[0.07em] uppercase px-2 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600"> {d.tag} </span>
                           </div>
-                          <p
-                            style={{
-                              fontFamily: "'DM Sans',sans-serif",
-                              fontSize: 13,
-                              color: C.textSecondary,
-                              margin: "0 0 12px",
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {d.desc}
-                          </p>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 5,
-                            }}
-                          >
-                            {[
-                              {
-                                icon: Mail,
-                                href: `mailto:${d.email}`,
-                                val: d.email,
-                              },
-                              {
-                                icon: Phone,
-                                href: `tel:${d.phone.replace(/\s/g, "")}`,
-                                val: d.phone,
-                              },
-                            ].map(({ icon: Icon, href, val }) => (
-                              <a
-                                key={val}
-                                href={href}
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 7,
-                                  fontSize: 13,
-                                  fontWeight: 600,
-                                  color: C.primaryBlue,
-                                }}
-                              >
-                                <Icon
-                                  size={12}
-                                  color={C.secondaryBlue}
-                                  strokeWidth={2.5}
-                                />{" "}
-                                {val}
-                              </a>
-                            ))}
+                          <p className="font-dm-sans text-[13px] m-0 mb-3 leading-relaxed" style={{ color: C.textSecondary }}>{d.desc}</p>
+                          <div className="flex flex-col gap-1.5">
+                            <a href={`mailto:${d.email}`} className="flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: C.primaryBlue }}>
+                              <Mail size={12} color={C.secondaryBlue} strokeWidth={2.5} /> {d.email}
+                            </a>
+                            <a href={`tel:${d.phone.replace(/\s/g, "")}`} className="flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: C.primaryBlue }}>
+                              <Phone size={12} color={C.secondaryBlue} strokeWidth={2.5} /> {d.phone}
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -1949,90 +752,19 @@ const ContactPage = () => {
                 ))}
               </div>
 
-              {/* Response guarantee */}
               <Reveal delay={0.35}>
-                <div
-                  style={{
-                    marginTop: 20,
-                    background: "linear-gradient(135deg,#0B1437,#111D4A)",
-                    border: "1px solid rgba(59,130,246,0.20)",
-                    borderRadius: 16,
-                    padding: 22,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                      marginBottom: 16,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 10,
-                        background: "rgba(20,184,166,0.15)",
-                        border: "1px solid rgba(20,184,166,0.28)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
+                <div className="mt-5 bg-gradient-to-br from-[#0B1437] to-[#111D4A] border border-blue-500/20 rounded-xl p-5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-9 h-9 rounded-lg bg-teal-500/15 border border-teal-500/28 flex items-center justify-center">
                       <Zap size={16} color={C.tealAccent} />
                     </div>
-                    <p
-                      style={{
-                        fontFamily: "'Sora',sans-serif",
-                        fontSize: 14,
-                        fontWeight: 700,
-                        color: "#fff",
-                        margin: 0,
-                      }}
-                    >
-                      Response Guarantee
-                    </p>
+                    <p className="font-sans text-sm font-bold text-white m-0">Response Guarantee</p>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 10,
-                    }}
-                  >
-                    {[
-                      { label: "Email support", time: "Within 2 hours" },
-                      { label: "Phone support", time: "Immediate" },
-                      { label: "Technical issues", time: "Within 4 hours" },
-                    ].map(({ label, time }) => (
-                      <div
-                        key={label}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "'DM Sans',sans-serif",
-                            fontSize: 13,
-                            color: "rgba(255,255,255,0.50)",
-                          }}
-                        >
-                          {label}
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: "'Sora',sans-serif",
-                            fontSize: 13,
-                            fontWeight: 700,
-                            color: C.tealAccent,
-                          }}
-                        >
-                          {time}
-                        </span>
+                  <div className="flex flex-col gap-2.5">
+                    {[{ label: "Email support", time: "Within 2 hours" }, { label: "Phone support", time: "Immediate" }, { label: "Technical issues", time: "Within 4 hours" }].map(({ label, time }) => (
+                      <div key={label} className="flex justify-between items-center">
+                        <span className="font-dm-sans text-[13px] text-white/50">{label}</span>
+                        <span className="font-sans text-[13px] font-bold text-teal-500">{time}</span>
                       </div>
                     ))}
                   </div>

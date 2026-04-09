@@ -6,6 +6,10 @@ import ButtonEffect from './button';
 import { ToastContainer } from 'react-toastify';
 import AboutPage from './pages/user_side/AboutPage';
 import ContactPage from './pages/user_side/ContactPage';
+import BlogPage from './pages/user_side/BlogPage';
+import BlogDetailPage from './pages/user_side/BlogDetailPage';
+import RecruitmentPage from './pages/user_side/RecruitmentPage';
+import RecruitmentDetailPage from './pages/user_side/RecruitmentDetailPage';
 
 const App = () => {
   console.log("App component rendered");
@@ -18,6 +22,10 @@ const App = () => {
            <Route index path="/" element={<LandingPage />} />
            <Route path='/about' element={<AboutPage/>}/>
            <Route path='/contact' element={<ContactPage/>} />
+           <Route path='/blog' element={<BlogPage/>} />
+           <Route path='/blog/:id' element={<BlogDetailPage/>} />
+           <Route path='/recruitment' element={<RecruitmentPage/>} />
+           <Route path='/recruitment/:id' element={<RecruitmentDetailPage/>} />
          </Route>
       </Routes>
    </Router>
