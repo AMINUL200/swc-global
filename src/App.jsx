@@ -10,6 +10,7 @@ import BlogPage from './pages/user_side/BlogPage';
 import BlogDetailPage from './pages/user_side/BlogDetailPage';
 import RecruitmentPage from './pages/user_side/RecruitmentPage';
 import RecruitmentDetailPage from './pages/user_side/RecruitmentDetailPage';
+import ServiceDetailsPage from './pages/user_side/ServiceDetailsPage';
 
 const App = () => {
   console.log("App component rendered");
@@ -26,6 +27,7 @@ const App = () => {
            <Route path='/blog/:id' element={<BlogDetailPage/>} />
            <Route path='/recruitment' element={<RecruitmentPage/>} />
            <Route path='/recruitment/:id' element={<RecruitmentDetailPage/>} />
+           <Route path='/services/:slug' element={<ServiceDetailsPage/>} />
          </Route>
       </Routes>
    </Router>
