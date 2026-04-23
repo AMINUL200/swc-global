@@ -19,7 +19,7 @@ const C = {
   bgMain: "#F0F4FF",
   border: "rgba(30,58,138,0.12)",
   textPrimary: "#111827",
-  textSecondary: "#6B7280",
+  textSecondary: "#111827",
   gradientBrand: "linear-gradient(135deg,#1E3A8A 0%,#2563EB 50%,#14B8A6 100%)",
 };
 
@@ -431,8 +431,8 @@ const AboutSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-20 md:py-28 overflow-hidden"
-      style={{ backgroundColor: C.bgMain }}
+      className="relative py-20 md:py-28 overflow-hidden bg-white"
+      // style={{ backgroundColor: C.bgMain }}
     >
       {/* Background Decorations similar to hero section */}
       <div className="absolute inset-0 pointer-events-none">

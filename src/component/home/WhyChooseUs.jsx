@@ -178,8 +178,8 @@ const WhyChooseUs = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-20 md:py-28 overflow-hidden"
-      style={{ backgroundColor: '#F8FAFC' }}
+      className="relative py-20 md:py-28 overflow-hidden bg-white"
+      // style={{ backgroundColor: '#F8FAFC' }}
     >
       {/* Background Decorations */}
       <div className="absolute inset-0 pointer-events-none">

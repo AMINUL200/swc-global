@@ -172,10 +172,8 @@ const OurProduct = ({ productData = [] }) => {
 
   return (
     <section
-      className="relative py-20 overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #FAFAFF 0%, #F2EEFF 50%, #FAFAFF 100%)",
-      }}
+      className="relative py-20 overflow-hidden bg-white"
+      
     >
       {/* Sophisticated Background Pattern */}
       <div className="absolute inset-0">

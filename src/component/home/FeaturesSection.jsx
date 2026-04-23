@@ -104,7 +104,7 @@ const FeaturesSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden" style={{ backgroundColor: '#F0F4FF' }}>
+    <section ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden bg-white" >
       {/* Background Decorations */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/5 to-teal/5 rounded-full blur-3xl" />

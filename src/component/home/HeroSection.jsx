@@ -313,7 +313,7 @@ const HeroSection = () => {
           width: 100%;
           min-height: 100svh;
           overflow: hidden;
-          background: #F0F4FF;
+          // background: #F0F4FF;
           display: flex;
           flex-direction: column;
         }
@@ -375,7 +375,7 @@ const HeroSection = () => {
         .hero-slide__bg-grad {
           position: absolute;
           inset: 0;
-          background: linear-gradient(180deg, transparent 40%, rgba(240,244,255,0.8) 100%);
+          // background: linear-gradient(180deg, transparent 40%, rgba(240,244,255,0.8) 100%);
         }
 
         /* ── Inner ── */
@@ -443,7 +443,7 @@ const HeroSection = () => {
         .hero-sub {
           font-family: 'DM Sans', system-ui, sans-serif;
           font-size: clamp(1rem, 1.5vw, 1.125rem);
-          color: #6B7280;
+          color: black;
           line-height: 1.75;
           max-width: 500px;
           margin-bottom: 2.25rem;
@@ -867,13 +867,13 @@ const HeroSection = () => {
         .hero-swiper .swiper-button-prev { display: none; }
       `}</style>
 
-      <section className="hero-section">
+      <section className="hero-section bg-white">
         <Swiper
           ref={swiperRef}
           modules={[Autoplay, EffectFade, Pagination, Navigation]}
           effect="fade"
           fadeEffect={{ crossFade: true }}
-          autoplay={{ delay: AUTOPLAY_DELAY, disableOnInteraction: false }}
+          // autoplay={{ delay: AUTOPLAY_DELAY, disableOnInteraction: false }}
           loop
           speed={800}
           onSlideChange={(swiper) => setActiveIdx(swiper.realIndex)}

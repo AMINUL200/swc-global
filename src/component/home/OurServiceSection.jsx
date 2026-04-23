@@ -390,7 +390,7 @@ const OurServiceSection = () => {
         }
         .svc2-sub {
           font-family: 'DM Sans', system-ui, sans-serif;
-          font-size: 1rem; color: #9CA3AF; line-height: 1.75;
+          font-size: 1rem; color: black; line-height: 1.75;
         }
         .svc2-header__cta {
           display: inline-flex; align-items: center; gap: 8px;
@@ -424,7 +424,7 @@ const OurServiceSection = () => {
           padding: 6px;
           background: rgba(255,255,255,0.7);
           backdrop-filter: blur(12px);
-          border: 1px solid rgba(30,58,138,0.09);
+          border: 1px solid black;
           border-radius: 18px;
           width: fit-content;
           max-width: 100%;
@@ -518,7 +518,7 @@ const OurServiceSection = () => {
         .svc2-content__desc {
           font-family: 'DM Sans', system-ui, sans-serif;
           font-size: 0.9875rem;
-          color: #6B7280;
+          color: black;
           line-height: 1.8;
           margin-bottom: 1.75rem;
           max-width: 500px;
@@ -554,6 +554,7 @@ const OurServiceSection = () => {
         .svc2-feature__detail {
           font-family: 'DM Sans', system-ui, sans-serif;
           font-size: 0.8rem; color: #9CA3AF; line-height: 1.5;
+          color: black;
         }
 
         /* CTAs */
@@ -851,7 +852,7 @@ const OurServiceSection = () => {
         .svc-vis__chart-footer span:last-child { color: #9CA3AF; font-weight: 400; font-family: 'DM Sans', system-ui, sans-serif; }
       `}</style>
 
-      <section className="svc2-section" ref={sectionRef}>
+      <section className="svc2-section bg-white!" ref={sectionRef} >
         <div className="svc2-inner">
 
           {/* ── Header ── */}
@@ -865,7 +866,7 @@ const OurServiceSection = () => {
                 Everything you need to<br />
                 <span>manage your workforce.</span>
               </h2>
-              <p className="svc2-sub">
+              <p className="svc2-sub text-black">
                 From legal compliance to recruitment, SWC delivers a complete HR ecosystem built specifically for UK employers managing skilled workers.
               </p>
             </div>
